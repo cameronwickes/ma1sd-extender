@@ -53,7 +53,3 @@ async def userDirectory(request: Request, access_token: str | None = None, reque
     """
     response = await search.findUsers(request)
     return response
-
-
-if __name__=="__main__":
-    uvicorn.run(app, host='0.0.0.0', port=8000)
