@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "ma1sd-extender"
+version = "0.1.0"
+description = ""
+authors = ["Cameron Wickes  <cameronjwickes@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.73.0"
+uvicorn = {extras = ["standard"], version = "^0.17.1"}
+python-multipart = "^0.0.5"
+asyncio = "^3.4.3"
+pydantic = "^1.9.0"
+requests = "^2.27.1"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+flake8-bugbear = "^21.11.29"
+black = "^21.12b0"
+mypy = "^0.930"
+poethepoet = "^0.11.0"
+flake8-bandit = "^2.1.2"
+flake8-import-order = "^0.18.1"
+flake8-string-format = "^0.3.0"
+flake8-tidy-imports = "^4.6.0"
+pytest = "^6.2.5"
+
+[tool.poetry.scripts]
+start = "ma1sd-extender:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
