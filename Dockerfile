@@ -55,8 +55,7 @@ WORKDIR $PYSETUP_PATH
 RUN poetry install
 
 WORKDIR /api
-#using volume during dev
-# COPY ./api .
+COPY ./api .
 
 EXPOSE 8060
 ENTRYPOINT /docker-entrypoint.sh $0 $@
