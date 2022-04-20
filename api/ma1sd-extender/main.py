@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, Request, Body, Response
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import search
 import models
@@ -21,6 +22,14 @@ app = FastAPI(title="ma1sd-extender",
         "name": "Apache 2.0",
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/", summary="Check MA1SD extender is running", response_model = models.RootResponse)
