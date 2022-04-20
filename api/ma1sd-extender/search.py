@@ -54,6 +54,7 @@ async def findUsers(request: Request):
 
     # Do recursive directory listing if requested.
     if recurse:
+        parsedBody["no_recursion"] = True
         for domain in MA1SD_EXTENDER_FEDERATED_DOMAINS:
             directoryListings.append(getDirectorySearch('https', domain, headers["authorization"], parsedBody))
 
