@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, Request, Body, Response
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 import asyncio
 import search
 import models
