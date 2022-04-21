@@ -46,7 +46,7 @@ async def findUsers(request: Request):
     return JSONResponse(status_code=200, content=parseDirectoryListings(chain(localDirectoryListings, remoteDirectoryListings)))
 
 
-async def getAccessToken(domain, username, password):
+def getAccessToken(domain, username, password):
     try:
         # Gain access token.and make request.
         url, body = f"https://{domain}:4343/_matrix/client/r0/login", {"type": "m.login.password", "identifier": {"type": "m.id.user", "user": f"{username}"}, "password": f"{password}"}
@@ -54,7 +54,7 @@ async def getAccessToken(domain, username, password):
     except:
         return "M_FORBIDDEN"
 
-async def checkAccessToken(domain, headers):
+def checkAccessToken(domain, headers):
     try:
         # Validate access token.
         url, headers = f"https://{domain}/_matrix/client/r0/account/3pid", {"Authorization": headers["authorization"]}
@@ -63,7 +63,7 @@ async def checkAccessToken(domain, headers):
         return False
 
 
-async def getDirectorySearch(https, domain, token, body):
+def getDirectorySearch(https, domain, token, body):
     try:
         # Set headers.
         url, headers = f"{https}://{domain}/_matrix/client/r0/user_directory/search", {"Authorization": token}
@@ -76,7 +76,7 @@ async def getDirectorySearch(https, domain, token, body):
         return []
 
 
-async def parseDirectoryListings(directoryListings):
+def parseDirectoryListings(directoryListings):
     try:
         return {"limited": any([x["limited"] for x in directoryListings]), "results": chain(*[x["results"] for x in directoryListings])}
     except:
