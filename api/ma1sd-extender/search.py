@@ -35,15 +35,17 @@ async def findUsers(request: Request):
         return JSONResponse(status_code=400, content={"errcode": "M_UNKNOWN_TOKEN", "error": "Invalid macaroon passed.", "soft_logout": False})
 
     # Retrieve local results.
-    localDirectoryListings = [getDirectorySearch('http', 'localhost:8090', f"Bearer {MA1SD_EXTENDER_ACCESS_TOKEN}", parsedBody)]
+    localDirectoryListings = list(filter(None, [getDirectorySearch('http', 'localhost:8090', f"Bearer {MA1SD_EXTENDER_ACCESS_TOKEN}", parsedBody)]))
+
+    remoteDirectoryListings = []
 
     # Do recursive directory listing if requested.
     if "no_recursion" not in parsedBody.keys():
         parsedBody["no_recursion"] = True
-        remoteDirectoryListings = [getDirectorySearch('https', domain, headers["authorization"], parsedBody) for domain in MA1SD_EXTENDER_FEDERATED_DOMAINS]
+        remoteDirectoryListings = list(filter(None, [getDirectorySearch('https', domain, headers["authorization"], parsedBody) for domain in MA1SD_EXTENDER_FEDERATED_DOMAINS]))
 
     # Get final response and return it.
-    return JSONResponse(status_code=200, content=parseDirectoryListings(chain(localDirectoryListings, remoteDirectoryListings)))
+    return JSONResponse(status_code=200, content=parseDirectoryListings(list(chain(localDirectoryListings, remoteDirectoryListings))))
 
 
 def getAccessToken(domain, username, password):
@@ -53,6 +55,7 @@ def getAccessToken(domain, username, password):
         return post(url, json=body).json()["access_token"]
     except:
         return "M_FORBIDDEN"
+
 
 def checkAccessToken(domain, headers):
     try:
@@ -71,13 +74,13 @@ def getDirectorySearch(https, domain, token, body):
 
         if response.status_code == 200 and "error" not in response.json().keys():
             return response.json()
-        return []
+        return None
     except:
-        return []
+        return None
 
 
 def parseDirectoryListings(directoryListings):
     try:
-        return {"limited": any([x["limited"] for x in directoryListings]), "results": chain(*[x["results"] for x in directoryListings])}
+        return {"limited": any([x["limited"] for x in directoryListings]), "results": list(chain(*[x["results"] for x in directoryListings]))}
     except:
         return {"limited": False, "results": []}
