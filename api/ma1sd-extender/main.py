@@ -1,6 +1,10 @@
 import uvicorn
-from fastapi import FastAPI, Request, Body, Response
+from fastapi import FastAPI, Request, Body, Response, Depends
+from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
+from fastapi_cache import caches, close_caches
+from fastapi_cache.backends.redis import CACHE_KEY, RedisCacheBackend
+from json import loads
 import asyncio
 import search
 import models
@@ -32,6 +36,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def redis_cache():
+    return caches.get(CACHE_KEY)
+
+@app.on_event('startup')
+async def onStartup():
+    rc = RedisCacheBackend('redis://localhost')
+    caches.set(CACHE_KEY, rc)
+
+@app.on_event('shutdown')
+async def onShutdown():
+    await close_caches()
+
 @app.get("/", summary="Check MA1SD extender is running", response_model = models.RootResponse)
 async def root():
     """
@@ -40,7 +56,7 @@ async def root():
     return {"message": "MA1SD Extender"}
 
 @app.post("/_matrix/client/r0/user_directory/search", summary="Recursively search for Matrix users", response_model = models.UserDirectoryResponse)
-async def userDirectory(request: Request, access_token: str | None = None, requestBody: models.UserDirectoryBody = Body(..., example={"search_term": "johndoe@example.org", "no_recursion": True})):
+async def userDirectory(request: Request, cache: RedisCacheBackend = Depends(redis_cache), access_token: str | None = None, requestBody: models.UserDirectoryBody = Body(..., example={"search_term": "johndoe@example.org", "no_recursion": True})):
     """
     Endpoint that attempts to compile a list of all potential users a client could be referring to. Recursively searches federation servers for users within their own user directories.
 
@@ -60,5 +76,16 @@ async def userDirectory(request: Request, access_token: str | None = None, reque
     - display_name: str - Display name of each gathered user
     - user_id : str - Matrix ID of each gathered user
     """
-    response = await search.findUsers(request)
-    return response
+    try:
+        body = await request.json()
+        searchTerm = body["search_term"]
+        inCache = await cache.get(searchTerm)
+        if not inCache:
+            response = await search.findUsers(request)
+            await cache.set(searchTerm, response.body)
+            await cache.expire(searchTerm, 86400)
+            return response
+        else:
+            return JSONResponse(status_code=200, content=loads(inCache))
+    except:
+        return JSONResponse(status_code=400, content={'errcode': 'M_UNKNOWN', 'error': 'search_term` is required field', 'success': False})
