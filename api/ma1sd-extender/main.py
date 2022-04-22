@@ -76,16 +76,5 @@ async def userDirectory(request: Request, cache: InMemoryCacheBackend = Depends(
     - display_name: str - Display name of each gathered user
     - user_id : str - Matrix ID of each gathered user
     """
-    try:
-        body = await request.json()
-        searchTerm = body["search_term"]
-        inCache = await cache.get(searchTerm)
-        if not inCache:
-            response = await search.findUsers(request)
-            await cache.set(searchTerm, response.body)
-            await cache.expire(searchTerm, 86400)
-            return response
-        else:
-            return JSONResponse(status_code=200, content=loads(inCache))
-    except:
-        return JSONResponse(status_code=400, content={'errcode': 'M_UNKNOWN', 'error': 'search_term` is required field', 'success': False})
+    response = await search.findUsers(request, cache)
+    return response
