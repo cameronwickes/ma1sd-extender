@@ -12,8 +12,7 @@ python-multipart = "^0.0.5"
 asyncio = "^3.4.3"
 pydantic = "^1.9.0"
 requests = "^2.27.1"
-aioredis = "^2.0.1"
-fastapi-cache2 = "^0.1.8"
+fastapi-cache = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
