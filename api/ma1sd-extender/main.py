@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Body, Response, Depends
 from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 from fastapi_cache import caches, close_caches
-from fastapi_cache.backends.redis import CACHE_KEY, RedisCacheBackend
+from fastapi_cache.backends.memory import CACHE_KEY, InMemoryCacheBackend
 from json import loads
 import asyncio
 import search
@@ -36,12 +36,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def redis_cache():
+def cache():
     return caches.get(CACHE_KEY)
 
 @app.on_event('startup')
 async def onStartup():
-    rc = RedisCacheBackend('redis://localhost')
+    rc = InMemoryCacheBackend()
     caches.set(CACHE_KEY, rc)
 
 @app.on_event('shutdown')
@@ -56,7 +56,7 @@ async def root():
     return {"message": "MA1SD Extender"}
 
 @app.post("/_matrix/client/r0/user_directory/search", summary="Recursively search for Matrix users", response_model = models.UserDirectoryResponse)
-async def userDirectory(request: Request, cache: RedisCacheBackend = Depends(redis_cache), access_token: str | None = None, requestBody: models.UserDirectoryBody = Body(..., example={"search_term": "johndoe@example.org", "no_recursion": True})):
+async def userDirectory(request: Request, cache: InMemoryCacheBackend = Depends(cache), access_token: str | None = None, requestBody: models.UserDirectoryBody = Body(..., example={"search_term": "johndoe@example.org", "no_recursion": True})):
     """
     Endpoint that attempts to compile a list of all potential users a client could be referring to. Recursively searches federation servers for users within their own user directories.
 
