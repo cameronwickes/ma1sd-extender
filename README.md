@@ -13,6 +13,8 @@
   An API, built with <b>Docker</b> and <b>FastAPI</b>, that allows <b>Matrix</b> user directory searches to be recursively federated for corporate use.
 </p>
 
+</br>
+
 <p>
   <b>MA1SD-Extender performs the following sequence of actions in order to recursively federate directory lookups:</b>
   <ul>
