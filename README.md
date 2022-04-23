@@ -52,7 +52,7 @@ MA1SD_EXTENDER_PASSWORD="X" \
 MA1SD_EXTENDER_MATRIX_DOMAIN="X" \
 MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']"
 poetry install
-uvicorn --reload --host='0.0.0.0' --port=PORT_NUMBER ma1sd-extender.main:app
+uvicorn --reload --host='0.0.0.0' --port=8060 ma1sd-extender.main:app
 ```
 
 ## 📦 Running With Docker/Podman
@@ -67,6 +67,18 @@ docker run --name ma1sd \
 -e MA1SD_EXTENDER_MATRIX_DOMAIN="X" \
 -e MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']" \
 ma1sd-extender:latest
+```
+
+## 💻 NGINX Proxy Setup
+
+Once MA1SD-Extender is running, an NGINX proxy can be configured to pass requests to and from the API. The following section should be placed within the NGINX configuration file.
+
+```
+location /_matrix/client/r0/user_directory {
+    proxy_pass http://0.0.0.0:8060/_matrix/client/r0/user_directory;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+}
 ```
 
 ## ⚖️ License
