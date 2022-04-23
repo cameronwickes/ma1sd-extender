@@ -10,5 +10,21 @@
 </p>
 
 <p align="center">
-  An API, built with <b>Docker</b> and <b>FastAPI</b> that allows <b>Matrix</b> user directory searches to be recursively federated for corporate use.
+  An API, built with <b>Docker</b> and <b>FastAPI</b>, that allows <b>Matrix</b> user directory searches to be recursively federated for corporate use.
+</p>
+
+<p>
+  <b>MA1SD-Extender performs the following sequence of actions in order to recursively federate directory lookups:</b>
+  <ul>
+    <li>Checks the validity of API supplied credentials</li>
+    <li>Checks the validity of a user specified authorisation token against all federation domains</li>
+    <li>Returns previously cached responses for faster lookups</li>
+    <li>Searches within local directory for users</li>
+    <li>Recursively searches other federation domains for users</li>
+    <li>Returns pooled responses masquerading as the local MA1SD server</li>
+  </ul>
+  
+  </br>
+  
+  MA1SD-Extender is available from this repository, and can also be found on the <a target="_blank" href="https://hub.docker.com/repository/docker/cameronwickes/ma1sd-extender">Docker Hub</a>.
 </p>
