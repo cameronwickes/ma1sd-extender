@@ -40,7 +40,7 @@ The following environment variables are required by MA1SD-Extender:
 - `MA1SD_EXTENDER_MATRIX_DOMAIN`: The domain that Synapse and MA1SD are running on.
 - `MA1SD_EXTENDER_FEDERATED_DOMAINS`: Any domains to be recursively federated.
 
-MA1SD-Extender needs a valid account on the local Synapse homeserver, specified by the MA1SD_EXTENDER_USERNAME and MA1SD_EXTENDER_PASSWORD variables.
+MA1SD-Extender needs a valid account on the local Synapse homeserver and both MA1SD and Synapse need to be running the host that the extender runs on.
 
 ## 🐍 Running With Python
 
