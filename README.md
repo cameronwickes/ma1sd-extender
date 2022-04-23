@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="matrix logo" src="https://www.cameronwickes.co.uk/ma1sd-extender.png" width="200px"/><br/>
+  <img alt="matrix logo" src="https://www.cameronwickes.co.uk/ma1sd-extender.png" width="300px"/><br/>
   Matrix-Automation
 </h1>
 
