@@ -40,14 +40,17 @@ The following environment variables are required by MA1SD-Extender:
 - `MA1SD_EXTENDER_MATRIX_DOMAIN`: The domain that Synapse and MA1SD are running on.
 - `MA1SD_EXTENDER_FEDERATED_DOMAINS`: Any domains to be recursively federated.
 
-MA1SD-Extender needs a valid account on the local Synapse homeserver, specified by the `MA1SD_EXTENDER_USERNAME` and `MA1SD_EXTENDER_PASSWORD` variables.
+MA1SD-Extender needs a valid account on the local Synapse homeserver, specified by the MA1SD_EXTENDER_USERNAME and MA1SD_EXTENDER_PASSWORD variables.
 
 ## 🐍 Running With Python
 
 MA1SD-Extender can be run with Python, Poetry and FastAPI.
 
 ```bash
-export MA1SD_EXTENDER_USERNAME="X" MA1SD_EXTENDER_PASSWORD="X" MA1SD_EXTENDER_MATRIX_DOMAIN="X" MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']"
+export MA1SD_EXTENDER_USERNAME="X" \
+MA1SD_EXTENDER_PASSWORD="X" \
+MA1SD_EXTENDER_MATRIX_DOMAIN="X" \
+MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']"
 poetry install
 uvicorn --reload --host='0.0.0.0' --port=PORT_NUMBER ma1sd-extender.main:app
 ```
