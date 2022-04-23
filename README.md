@@ -30,3 +30,42 @@
   
   MA1SD-Extender is available from this repository, and can also be found on the <a target="_blank" href="https://hub.docker.com/repository/docker/cameronwickes/ma1sd-extender">Docker Hub</a>.
 </p>
+
+## ⚙️ Configuration Variables
+
+The following environment variables are required by MA1SD-Extender:
+
+- `MA1SD_EXTENDER_USERNAME`: The username for MA1SD-Extender access.
+- `MA1SD_EXTENDER_PASSWORD`: The password for MA1SD-Extender access.
+- `MA1SD_EXTENDER_MATRIX_DOMAIN`: The domain that Synapse and MA1SD are running on.
+- `MA1SD_EXTENDER_FEDERATED_DOMAINS`: Any domains to be recursively federated.
+
+MA1SD-Extender needs a valid account on the local Synapse homeserver, specified by the `MA1SD_EXTENDER_USERNAME` and `MA1SD_EXTENDER_PASSWORD` variables.
+
+## 🐍 Running With Python
+
+MA1SD-Extender can be run with Python, Poetry and FastAPI.
+
+```bash
+export MA1SD_EXTENDER_USERNAME="X" MA1SD_EXTENDER_PASSWORD="X" MA1SD_EXTENDER_MATRIX_DOMAIN="X" MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']"
+poetry install
+uvicorn --reload --host='0.0.0.0' --port=PORT_NUMBER ma1sd-extender.main:app
+```
+
+## 📦 Running With Docker/Podman
+
+MA1SD-Extender can also be run with Docker/Podman using the following commands:
+
+```bash
+docker pull cameronwickes/ma1sd-extender:latest
+docker run --name ma1sd \
+-e MA1SD_EXTENDER_USERNAME="X" \
+-e MA1SD_EXTENDER_PASSWORD="X" \
+-e MA1SD_EXTENDER_MATRIX_DOMAIN="X" \
+-e MA1SD_EXTENDER_FEDERATED_DOMAINS="['X']" \
+ma1sd-extender:latest
+```
+
+## ⚖️ License
+
+`MA1SD-Extender` is free and open-source software licensed under the [Apache 2.0 License](https://github.com/cameronwickes/ma1sd-extender/blob/main/LICENSE).
