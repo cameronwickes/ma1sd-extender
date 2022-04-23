@@ -44,7 +44,7 @@ MA1SD-Extender needs a valid account on the local Synapse homeserver and both MA
 
 ## 🐍 Running With Python
 
-MA1SD-Extender can be run with Python, Poetry and FastAPI.
+MA1SD-Extender can be run with Python, Poetry and FastAP with the following commands
 
 ```bash
 export MA1SD_EXTENDER_USERNAME="X" \
@@ -57,7 +57,7 @@ uvicorn --reload --host='0.0.0.0' --port=8060 ma1sd-extender.main:app
 
 ## 📦 Running With Docker/Podman
 
-MA1SD-Extender can also be run with Docker/Podman using the following commands:
+MA1SD-Extender can also be run with Docker/Podman with the following commands:
 
 ```bash
 docker pull cameronwickes/ma1sd-extender:latest
