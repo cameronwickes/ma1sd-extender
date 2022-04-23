@@ -1,6 +1,6 @@
 <h1 align="center">
   <img alt="matrix logo" src="https://www.cameronwickes.co.uk/ma1sd-extender.png" width="250px"/><br/>
-  Matrix-Automation
+  MA1SD-Extender
 </h1>
 
 <p align="center">
